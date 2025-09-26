@@ -1,1 +1,14 @@
-spring.application.name=ai-robot
+spring:
+  application:
+    name: ai-robot
+  ai:
+    openai:
+      api-key: sk-cae284f531e34b2db97e9c7a33c27b4f
+      base-url: https://dashscope.aliyuncs.com/compatible-mode
+      chat:
+        options:
+          model: qwen3-vl-plus
+          temperature: 0.8
+
+server:
+  port: 8080
