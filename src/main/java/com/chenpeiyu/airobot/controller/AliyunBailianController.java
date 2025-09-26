@@ -29,7 +29,6 @@ public class AliyunBailianController {
     public Flux<String> generateStream(@RequestParam(value = "message", defaultValue = "你是谁？") String message) {
         // 构建提示词
         Prompt prompt = new Prompt(new UserMessage(message));
-        System.out.println("hello");
         // 流式输出
         return chatModel.stream(prompt)
                 .mapNotNull(chatResponse -> {
