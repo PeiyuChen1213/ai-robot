@@ -37,6 +37,8 @@ public class AliyunBailianController {
                     return Objects.nonNull(generation) ? generation.getOutput().getText() : null;
                 });
 
+        //測試行數
+
     }
 
 }
