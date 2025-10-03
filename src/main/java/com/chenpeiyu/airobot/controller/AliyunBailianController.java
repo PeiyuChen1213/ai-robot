@@ -1,6 +1,7 @@
 package com.chenpeiyu.airobot.controller;
 
 import jakarta.annotation.Resource;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -18,7 +19,7 @@ import java.util.Objects;
 public class AliyunBailianController {
 
     @Resource
-    private OpenAiChatModel chatModel;
+    private ChatClient chatClient;
 
     @Resource
 
@@ -29,14 +30,12 @@ public class AliyunBailianController {
      */
     @GetMapping(value = "/generateStream", produces = "text/html;charset=utf-8")
     public Flux<String> generateStream(@RequestParam(value = "message", defaultValue = "你是谁？") String message) {
-        // 构建提示词
-        Prompt prompt = new Prompt(new UserMessage(message));
-        // 流式输出
-        return chatModel.stream(prompt)
-                .mapNotNull(chatResponse -> {
-                    Generation generation = chatResponse.getResult();
-                    return Objects.nonNull(generation) ? generation.getOutput().getText() : null;
-                });
+
+        // 使用chat client 替换之前的chat model的方法
+        return chatClient.prompt()
+                .user(message) // 提示词
+                .stream() // 流式输出
+                .content();
     }
 
 }
