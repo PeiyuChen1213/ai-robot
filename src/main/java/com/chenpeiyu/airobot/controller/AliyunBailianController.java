@@ -1,6 +1,5 @@
 package com.chenpeiyu.airobot.controller;
 
-import com.chenpeiyu.airobot.service.TestService;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.Generation;
@@ -22,7 +21,6 @@ public class AliyunBailianController {
     private OpenAiChatModel chatModel;
 
     @Resource
-    private TestService testService;
 
     /**
      * 流式对话
@@ -33,16 +31,12 @@ public class AliyunBailianController {
     public Flux<String> generateStream(@RequestParam(value = "message", defaultValue = "你是谁？") String message) {
         // 构建提示词
         Prompt prompt = new Prompt(new UserMessage(message));
-        testService.testFun();
         // 流式输出
         return chatModel.stream(prompt)
                 .mapNotNull(chatResponse -> {
                     Generation generation = chatResponse.getResult();
                     return Objects.nonNull(generation) ? generation.getOutput().getText() : null;
                 });
-
-        //測試行數
-
     }
 
 }
