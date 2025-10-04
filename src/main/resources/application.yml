@@ -10,5 +10,10 @@ spring:
           model: qwen3-vl-plus
           temperature: 0.8
 
+logging:
+  level:
+    org.springframework.ai.chat.client.advisor: debug
+
+
 server:
   port: 8080
