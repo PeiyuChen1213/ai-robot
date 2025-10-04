@@ -22,12 +22,12 @@ public class AliyunBailianController {
      * @return
      */
     @GetMapping(value = "/generateStream", produces = "text/html;charset=utf-8")
-    public Flux<String> generateStream(@RequestParam(value = "message", defaultValue = "你是谁？") String message) {
+    public String generateStream(@RequestParam(value = "message", defaultValue = "你是谁？") String message) {
 
         // 使用chat client 替换之前的chat model的方法
         return chatClient.prompt()
-                .user(message) // 提示词
-                .stream() // 流式输出
+                .user(message) // 提示词// 流式输出
+                .call()
                 .content();
     }
 
