@@ -2,6 +2,7 @@ package com.chenpeiyu.airobot.controller;
 
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,17 +19,21 @@ public class AliyunBailianController {
 
     /**
      * 流式对话
-     * @param message
-     * @return
+     * @param message 对话
+     * @param chatId 对话id
+     * @return 流式输出
      */
     @GetMapping(value = "/generateStream", produces = "text/html;charset=utf-8")
-    public String generateStream(@RequestParam(value = "message", defaultValue = "你是谁？") String message) {
+    public Flux<String> generateStream(@RequestParam(value = "message", defaultValue = "你是谁？") String message,
+                                       @RequestParam(value = "chatId") String chatId) {
 
-        // 使用chat client 替换之前的chat model的方法
+        // 流式输出
         return chatClient.prompt()
-                .user(message) // 提示词// 流式输出
-                .call()
+                .user(message) // 提示词
+                .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, chatId))
+                .stream()
                 .content();
+
     }
 
 }
